@@ -9,6 +9,7 @@ function ProductSize({
   setSize: React.Dispatch<React.SetStateAction<SizesProp>>;
   currentSize: SizesProp;
 }) {
+
   return (
     <button
       onClick={() => setSize(size)}
@@ -18,7 +19,7 @@ function ProductSize({
           : "bg-white text-gray-900 border-gray-200 flex items-center rounded-full justify-center transition-all duration-300 hover:bg-gray-50 hover:shadow-sm hover:shadow-gray-100 hover:border-gray-300 visited:border-gray-300 visited:bg-gray-50"
       }`}
     >
-      {size}
+      {size} 
     </button>
   );
 }

@@ -1,19 +1,24 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router";
 import { ArrowIcons, MenuIcons } from "../../assets/icons/icons";
 import Logo from "../logo";
 import ShopCounter from "../shop-counter";
+
+// Define the structure for menu items
 interface LinksMenuProps {
   title: string;
-  type: "normal" | "dropdown";
+  type: "normal" | "dropdown"; // Indicates if it's a regular link or dropdown
   link: string | null;
-  linksDrop?: LinksMenuProps[];
+  linksDrop?: LinksMenuProps[]; // For dropdowns
 }
-function Navbar() {
-  const [openMenus, setOpenMenus] = useState(false);
-  const [openDropdownMenus, setOpenDropdownMenus] = useState(false);
-  const { pathname } = useLocation();
 
+function Navbar() {
+  const [openMenus, setOpenMenus] = useState(false); // Toggle for mobile nav
+  const [openDropdownMenus, setOpenDropdownMenus] = useState(false); // Toggle for dropdown menu
+  const { pathname } = useLocation(); // Get the current route
+  
+
+  // Define all top-level navigation links
   const LinksMenu: LinksMenuProps[] = [
     {
       title: "Home",
@@ -58,67 +63,74 @@ function Navbar() {
       link: "/contact",
     },
   ];
+
   return (
     <nav className="bg-gray-900 border-gray-700">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Logo />
+
+        {/* Mobile right-side buttons: cart + menu icon */}
         <div className="flex items-center gap-x-3 md:hidden">
           <ShopCounter />
-
           <button
             data-collapse-toggle="navbar-dropdown"
             onClick={() => {
               setOpenMenus(!openMenus);
             }}
             type="button"
-            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm  rounded-lg  focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
+            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
             aria-controls="navbar-dropdown"
             aria-expanded="false"
           >
             <MenuIcons />
           </button>
         </div>
+
+        {/* Main navigation menu */}
         <div
           className={
             openMenus
-              ? "w-full md:flex md:w-auto  items-center gap-x-4"
-              : "hidden w-full md:flex items-center gap-x-4  md:w-auto"
+              ? "w-full md:flex md:w-auto items-center gap-x-4"
+              : "hidden w-full md:flex items-center gap-x-4 md:w-auto"
           }
           id="navbar-dropdown"
         >
-          <ul className="flex flex-col gap-y-1 font-medium p-4 md:p-0 mt-4 border rounded-lg  md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0  bg-gray-800 md:bg-gray-900 border-gray-700">
+          <ul className="flex flex-col gap-y-1 font-medium p-4 md:p-0 mt-4 border rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 bg-gray-800 md:bg-gray-900 border-gray-700">
+            {/* Map through all nav items */}
             {LinksMenu.map((linkMenu) => {
               return linkMenu.type === "normal" ? (
                 <li key={linkMenu.title}>
+                  {/* Render normal link */}
                   <Link
                     to={linkMenu.link || "#"}
-                    className={`block py-2 px-3 text-white  rounded-sm md:bg-transparent  md:p-0  ${
+                    className={`block py-2 px-3 text-white rounded-sm md:bg-transparent md:p-0 ${
                       pathname === linkMenu.link
-                        ? " md:text-blue-400 bg-blue-400 md:bg-transparent"
+                        ? "md:text-blue-400 bg-blue-400 md:bg-transparent"
                         : ""
-                    }
-                      `}
+                    }`}
                   >
                     {linkMenu.title}
                   </Link>
                 </li>
               ) : (
                 <li key={linkMenu.title}>
+                  {/* Render dropdown button */}
                   <button
                     id="dropdownNavbarLink"
                     onClick={() => {
                       setOpenDropdownMenus(!openDropdownMenus);
                     }}
                     data-dropdown-toggle="dropdownNavbar"
-                    className="flex items-center justify-between w-full py-2 px-3  rounded-sm  md:border-0  md:p-0 md:w-auto text-white md:hover:text-blue-400 focus:text-white border-gray-700 hover:bg-gray-700 md:hover:bg-transparent"
+                    className="flex items-center justify-between w-full py-2 px-3 rounded-sm md:border-0 md:p-0 md:w-auto text-white md:hover:text-blue-400 focus:text-white border-gray-700 hover:bg-gray-700 md:hover:bg-transparent"
                   >
                     {linkMenu.title}
                     <ArrowIcons />
                   </button>
 
+                  {/* Dropdown content */}
                   <div
                     id="dropdownNavbar"
-                    className={`z-10 md:absolute w-[90%] mx-auto md:mx-0 md:w-44 md:my-0 my-2  font-normal duration-300 ease-in  divide-y rounded-lg shadow-sm  bg-gray-700 divide-gray-600 ${
+                    className={`z-10 md:absolute w-[90%] mx-auto md:mx-0 md:w-44 md:my-0 my-2 font-normal duration-300 ease-in divide-y rounded-lg shadow-sm bg-gray-700 divide-gray-600 ${
                       openDropdownMenus
                         ? "block opacity-100"
                         : "hidden opacity-0"
@@ -128,12 +140,13 @@ function Navbar() {
                       className="py-2 text-sm text-gray-400"
                       aria-labelledby="dropdownLargeButton"
                     >
+                      {/* Render dropdown links */}
                       {linkMenu.linksDrop?.map((linkDrop) => {
                         return (
                           <li key={linkDrop.title}>
                             <Link
                               to={linkDrop.link || "#"}
-                              className="block px-4 py-2  hover:bg-gray-600 hover:text-white"
+                              className="block px-4 py-2 hover:bg-gray-600 hover:text-white"
                             >
                               {linkDrop.title}
                             </Link>
@@ -146,6 +159,8 @@ function Navbar() {
               );
             })}
           </ul>
+
+          {/* Cart icon on desktop */}
           <div className="md:block hidden">
             <ShopCounter />
           </div>
