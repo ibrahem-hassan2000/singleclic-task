@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { ShoppingCartBlueIcons } from "../assets/icons/icons";
 const variantStyle = {
   card: "group md:py-2.5  py-1.5 md:px-5 px-2.5 md:rounded-full cursor-pointer hover:shadow-blue-200 hover:shadow  rounded-2xl bg-indigo-50 text-indigo-600 font-semibold text-sm md:text-lg w-fit flex items-center justify-center  md:gap-2 gap-1.5 transition-all duration-500 hover:bg-indigo-100",
@@ -10,13 +11,20 @@ function ButtonAdd({
   onClick: () => void;
   variant: "card" | "page";
 }) {
+  const notify = () => toast.success("Added To Cart");
   return (
     <button
-      onClick={() => onClick()}
+      onClick={() => {
+        onClick();
+        notify();
+      }}
       className={variant === "card" ? variantStyle.card : variantStyle.page}
     >
       <ShoppingCartBlueIcons />
-      Add <span className={variant === "card" ? "hidden md:block" : ""}>to cart</span>
+      Add{" "}
+      <span className={variant === "card" ? "hidden md:block" : ""}>
+        to cart
+      </span>
     </button>
   );
 }

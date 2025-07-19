@@ -10,6 +10,7 @@ import ComingSoon from "../../pages/coming-soon/coming-soon";
 import NotFound from "../../pages/not-found/not-found";
 import Home from "../../pages/Home/home";
 import Category from "../../pages/category/category";
+import { Toaster } from "react-hot-toast";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -44,6 +45,7 @@ function MainLayout() {
             {/* <Footer/> */}
             <Footer />
           </BrowserRouter>
+          <Toaster position="bottom-right" reverseOrder={false} />
         </div>
       </QueryClientProvider>
     </Provider>
